@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Suélen Vicente — Fotografia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+<header class="topbarb" data-header>
+  <div class="containerb">
+    <div class="brand-wrapb">
+      <a href="index.html" class="brandb" aria-label="Voltar ao início" title="Suélen Vicente">
+        <svg width="96" height="44" viewBox="0 0 192 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SV">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c28a57"/><stop offset="1" stop-color="#a87444"/></linearGradient></defs>
+          <text x="6" y="64" font-family="'Playfair Display', serif" font-weight="700" font-size="64" letter-spacing="2" fill="url(#g)">SV</text>
+        </svg>
+      </a>
+    </div>
+    <nav class="main-navb" aria-label="Primária">
+      <button class="nav-toggleb" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <ul class="nav-listb">
+        <li><a class="nav-linkb" href="index.html#home">Home</a></li>
+        <li><a class="nav-linkb" href="index.html#sobre">Sobre</a></li>
+        <li class="dropdown">
+          <button class="nav-linkb dropdown-toggle" aria-expanded="false" aria-haspopup="true">Portfólio</button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a role="menuitem" href="gestante.html">Gestante</a></li>
+            <li role="none"><a role="menuitem" href="revelacao.html">Revelação</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-linkb" href="index.html#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="nav-overlay" data-overlay hidden></div>
+</header>
+
+<main id="main">
+
+
+<section class="section portfolio" data-reveal>
+  <div class="container">
+    <h2 class="section-title">Gestante</h2>
+    <div id="portfolioGrid" class="portfolio-grid" data-filter="gestante" aria-live="polite"></div>
+  </div>
+</section>
+
+</main>
+<footer class="footer"><div class="container"><p>© <span id="year"></span> Suélen Vicente — Todos os direitos reservados</p></div></footer>
+<script src="js/site.js" defer></script>
+</body></html>

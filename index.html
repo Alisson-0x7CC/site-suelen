@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Suélen Vicente — Fotografia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+<header class="topbar" data-header>
+  <div class="container">
+    <div class="brand-wrap">
+      <a href="index.html" class="brand" aria-label="Voltar ao início" title="Suélen Vicente">
+        <svg width="96" height="44" viewBox="0 0 192 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SV">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c28a57"/><stop offset="1" stop-color="#a87444"/></linearGradient></defs>
+          <text x="6" y="64" font-family="'Playfair Display', serif" font-weight="700" font-size="64" letter-spacing="2" fill="url(#g)">SV</text>
+        </svg>
+      </a>
+    </div>
+    <nav class="main-nav" aria-label="Primária">
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="index.html#home">Home</a></li>
+        <li><a class="nav-link" href="index.html#sobre">Sobre</a></li>
+        <li class="dropdown">
+          <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Portfólio</button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a role="menuitem" href="gestante.html">Gestante</a></li>
+            <li role="none"><a role="menuitem" href="revelacao.html">Revelação</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link" href="index.html#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="nav-overlay" data-overlay hidden></div>
+</header>
+
+<main id="main">
+
+      <section id="home" class="hero-carousel" aria-label="Destaques">
+        <button class="arrow arrow-left" aria-label="Slide anterior" type="button">←</button>
+        <div class="slides" id="slides"></div>
+        <button class="arrow arrow-right" aria-label="Próximo slide" type="button">→</button>
+        <div class="hero-pagination" aria-live="polite">
+          <span id="heroCurrent">01</span>
+          <span class="sep">/</span>
+          <span id="heroTotal">10</span>
+        </div>
+      </section>
+
+
+<section id="sobre" class="section about" data-reveal>
+  <div class="container about-grid">
+    <div>
+      <h2>Sobre</h2>
+      <p>Sou a <strong>Suélen Vicente</strong>, fotógrafa especializada em gestantes, revelação e família. Meu olhar é guiado pela delicadeza e pela estética atemporal.</p>
+      <p>No estúdio, cada sessão é planejada para ser leve, segura e acolhedora. Vamos contar sua história com sensibilidade e arte.</p>
+      <a class="btn" href="#pacotes">Ver pacotes</a>
+    </div>
+    <figure class="about-photo"><img src="images/gestante/g06.jpg" alt="Suélen em estúdio" loading="lazy" decoding="async"/></figure>
+  </div>
+</section>
+
+<section id="portfolio" class="section portfolio" data-reveal>
+  <div class="container">
+    <h2 class="section-title">Portfólio</h2>
+    <div class="portfolio-controls" role="tablist" aria-label="Filtros do portfólio">
+      <button class="pill is-active" data-filter="all" role="tab" aria-selected="true">Todos</button>
+      <button class="pill" data-filter="gestante" role="tab">Gestante</button>
+      <button class="pill" data-filter="revelacao" role="tab">Revelação</button>
+    </div>
+    <div id="portfolioGrid" class="portfolio-grid" data-filter="all" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="pacotes" class="section pricing" data-reveal>
+  <div class="container">
+    <h2 class="section-title">Pacotes de Gestante</h2>
+    <article class="pricing-row">
+      <div class="pricing-text">
+        <h3>Mama Luxe</h3>
+        <p>Experiência completa, direção artística e conforto.</p>
+        <ul class="bullets">
+          <li>Mom + Família</li>
+          <li>20 fotos digitais</li>
+          <li>60–90 minutos</li>
+          <li>Até 4 trocas de looks</li>
+        </ul>
+        <div class="pricing-cta">
+          <span class="price">R$ 720</span>
+          <a class="link-underline" href="#contato">Reservar</a>
+        </div>
+      </div>
+      <figure class="pricing-media"><img src="images/pricing/mama-luxe.jpg" alt="Casal em estúdio" loading="lazy" decoding="async"/></figure>
+    </article>
+    <article class="pricing-row alt">
+      <figure class="pricing-media"><img src="images/pricing/mama-signature.jpg" alt="Gestante em fundo neutro" loading="lazy" decoding="async"/></figure>
+      <div class="pricing-text">
+        <h3>Mama Signature</h3>
+        <p>Tempo estendido, múltiplos looks e álbum artesanal.</p>
+        <ul class="bullets">
+          <li>Mom + Família</li>
+          <li>30 fotos digitais</li>
+          <li>90–120 minutos</li>
+          <li>Álbum 10×10</li>
+        </ul>
+        <div class="pricing-cta">
+          <span class="price">R$ 1.320</span>
+          <a class="link-underline" href="#contato">Reservar</a>
+        </div>
+      </div>
+    </article>
+
+    <h2 class="section-title" style="margin-top:3rem">Pacotes de Revelação</h2>
+    <article class="pricing-row">
+      <div class="pricing-text">
+        <h3>Reveal Petite</h3>
+        <p>Revelação rápida e objetiva, com foco na emoção do momento.</p>
+        <ul class="bullets">
+          <li>Casal + 1 familiar</li>
+          <li>10 fotos digitais</li>
+          <li>Até 40 minutos</li>
+          <li>Confete incluso</li>
+        </ul>
+        <div class="pricing-cta">
+          <span class="price">R$ 380</span>
+          <a class="link-underline" href="#contato">Reservar</a>
+        </div>
+      </div>
+      <figure class="pricing-media"><img src="images/revelacao/r04.jpg" alt="Revelação com confetes" loading="lazy" decoding="async"/></figure>
+    </article>
+    <article class="pricing-row alt">
+      <figure class="pricing-media"><img src="images/revelacao/r06.jpg" alt="Família abraçada" loading="lazy" decoding="async"/></figure>
+      <div class="pricing-text">
+        <h3>Reveal Luxe</h3>
+        <p>Produção completa, cobertura estendida e direção para família.</p>
+        <ul class="bullets">
+          <li>Família completa</li>
+          <li>20 fotos digitais</li>
+          <li>60–90 minutos</li>
+          <li>Extras: fumaça/bolinhas (sob consulta)</li>
+        </ul>
+        <div class="pricing-cta">
+          <span class="price">R$ 690</span>
+          <a class="link-underline" href="#contato">Reservar</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="contato" class="section contact" data-reveal>
+  <div class="container contact-grid">
+    <form id="contactForm" action="https://formspree.io/f/SEU_ID" method="POST" novalidate>
+      <div class="visually-hidden" aria-hidden="true">
+        <label>Não preencha: <input type="text" name="_honeypot" tabindex="-1"></label>
+      </div>
+      <label>Nome<input type="text" name="name" required autocomplete="name"></label>
+      <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
+      <label>Mensagem<textarea name="message" rows="5" required></textarea></label>
+      <button class="btn" type="submit">Enviar</button>
+      <p id="formNote" class="form-note" role="status" aria-live="polite"></p>
+    </form>
+    <div>
+      <p><strong>E-mail:</strong> <a href="mailto:contato@suelenvicente.com">contato@suelenvicente.com</a></p>
+      <p><strong>WhatsApp:</strong> <a id="whatsappCta" href="https://wa.me/55XXXXXXXXXXX?text=Olá%2C%20gostaria%20de%20agendar%20um%20ensaio." target="_blank" rel="noopener">(XX) XXXXX-XXXX</a></p>
+      <p><strong>Instagram:</strong> <a href="#" target="_blank" rel="noopener">@suelen.foto</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer"><div class="container"><p>© <span id="year"></span> Suélen Vicente — Todos os direitos reservados</p></div></footer>
+<script src="js/site.js" defer></script>
+</body></html>

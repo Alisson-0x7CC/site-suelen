@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Suélen Vicente — Portfólio</title>
+  <meta name="description" content="Portfólio fotográfico de Suélen Vicente — Especializada em gestantes, newborn, acompanhamento mensal, aniversários infantis e eventos." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Header / Menu -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">Suélen Vicente</a>
+      <nav class="nav" aria-label="Navegação principal">
+        <button class="nav-toggle" aria-label="Abrir menu">☰</button>
+        <ul class="nav-list">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#portfolio">Portfólio</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <h1>Fotografia que conta histórias de amor e afeto</h1>
+        <p class="lead">Gestante · Newborn · Família · Aniversários · Eventos</p>
+        <a class="btn" href="#portfolio">Ver Portfólio</a>
+      </div>
+    </section>
+
+    <!-- Portfólio -->
+    <section id="portfolio" class="section">
+      <div class="container">
+        <h2 class="section-title">Portfólio</h2>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="gestante">Gestante</button>
+          <button class="filter-btn" data-filter="newborn">Newborn</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+          <figure class="gallery-item" data-category="gestante">
+            <img src="images/gestante1.jpg" alt="Ensaio gestante" loading="lazy" />
+            <figcaption>Gestante — Estúdio</figcaption>
+          </figure>
+          <figure class="gallery-item" data-category="newborn">
+            <img src="images/newborn1.jpg" alt="Ensaio newborn" loading="lazy" />
+            <figcaption>Newborn — Estúdio</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="section about">
+      <div class="container about-inner">
+        <div class="about-photo">
+          <img src="images/suelen.jpg" alt="Fotógrafa Suélen Vicente" loading="lazy" />
+        </div>
+        <div class="about-text">
+          <h2>Sobre</h2>
+          <p>Sou a <strong>Suélen Vicente</strong>, fotógrafa apaixonada por registrar histórias de amor e afeto, aquelas que fazem o coração bater mais forte. Meu trabalho vai além de clicar imagens – é sobre criar memórias que trazem à tona sorrisos, lágrimas e, principalmente, aquela sensação de aconchego.</p>
+          <p>Cada sessão no meu estúdio é pensada para que as famílias se sintam em casa, à vontade, curtindo cada instante. Adoro estar presente nesses momentos tão especiais, e meu maior prazer é eternizar cada detalhe com carinho e sensibilidade. Afinal, o que a gente vive com amor merece ser lembrado pra sempre!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="servicos" class="section services">
+      <div class="container">
+        <h2 class="section-title">Serviços & Pacotes</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Revelação</h3>
+            <p>Impressão profissional de fotos em alta qualidade.</p>
+          </div>
+          <div class="card">
+            <h3>Gestante</h3>
+            <p>Ensaio gestante em estúdio ou externo, com edição profissional.</p>
+          </div>
+          <div class="card">
+            <h3>Newborn</h3>
+            <p>Ensaio newborn seguro e aconchegante, com acessórios inclusos.</p>
+          </div>
+          <div class="card">
+            <h3>Acompanhamento Mensal</h3>
+            <p>Registre o crescimento do bebê mês a mês.</p>
+          </div>
+          <div class="card">
+            <h3>Batizado</h3>
+            <p>Cobertura fotográfica de batizados com registros discretos e naturais.</p>
+          </div>
+          <div class="card">
+            <h3>Aniversário Infantil</h3>
+            <p>Registros espontâneos e cheios de emoção da festa.</p>
+          </div>
+          <div class="card">
+            <h3>Ensaios</h3>
+            <p>Ensaios individuais, de casal ou família.</p>
+          </div>
+          <div class="card">
+            <h3>Eventos</h3>
+            <p>Cobertura fotográfica de eventos sociais e corporativos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="section contact">
+      <div class="container">
+        <h2 class="section-title">Contato</h2>
+        <div class="contact-grid">
+          <form id="contactForm">
+            <label>Nome
+              <input type="text" name="name" required />
+            </label>
+            <label>E-mail
+              <input type="email" name="email" required />
+            </label>
+            <label>Mensagem
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+            <button type="submit" class="btn">Enviar</button>
+          </form>
+          <div class="contact-info">
+            <p><strong>E-mail:</strong> <a href="mailto:contato@suelenvicente.com">contato@suelenvicente.com</a></p>
+            <p><strong>Telefone / WhatsApp:</strong> (XX) XXXXX-XXXX</p>
+            <p><strong>Redes:</strong> <a href="#" target="_blank">Instagram</a> · <a href="#" target="_blank">Facebook</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Suélen Vicente — Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script src="js/scripts.js"></script>
+</body>
+</html>
