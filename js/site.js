@@ -1,6 +1,3 @@
-/* =========================
- *  Config & Data
- * ========================= */
 const IMAGES = [
   {src:'images/gestante/g01.jpg', alt:'Gestante - por do sol', cat:'gestante'},
   {src:'images/gestante/g02.jpg', alt:'Casal na praia', cat:'gestante'},
@@ -22,40 +19,41 @@ const IMAGES = [
   {src:'images/revelacao/r08.jpg', alt:'Retrato casal sorrisos', cat:'revelacao'},
   {src:'images/revelacao/r09.jpg', alt:'Menino vendado PB', cat:'revelacao'},
   {src:'images/revelacao/r10.jpg', alt:'Casal ajustando vendas', cat:'revelacao'},
+  {src:'images/revelacao/r11.jpg', alt:'Familia se abraçando', cat:'revelacao'},
+  {src:'images/revelacao/r12.jpg', alt:'Casal tirando vendas', cat:'revelacao'},
 ];
 
-// Se você tiver variantes g01-640.jpg, g01-1024.jpg, g01-1600.jpg etc., ligue isto:
+/* ===== Config responsiva =====
+ * Quando você gerar variações, crie:
+ *  - hero: 1920, 2560, 3840  (ex.: r04-1920.jpg, r04-2560.jpg, r04-3840.jpg)
+ *  - grid:  640, 1024, 1600
+ * Depois ligue HAS_VARIANTS = true
+ */
 const HAS_VARIANTS = true;
-
-// tamanhos do layout (combine com seu CSS)
 const GRID_SIZES = '(min-width:1280px) 25vw, (min-width:880px) 33vw, (min-width:640px) 50vw, 100vw';
 
-/* =========================
- *  Helpers
- * ========================= */
 const $  = (s, ctx=document) => ctx.querySelector(s);
 const $$ = (s, ctx=document) => Array.from(ctx.querySelectorAll(s));
-$('#year') && ($('#year').textContent = new Date().getFullYear());
 
-/** Retorna {src, srcset, sizes} com base no caminho original e no HAS_VARIANTS */
-function buildResponsive(imgSrc, sizes = GRID_SIZES) {
-  if (!HAS_VARIANTS) return { src: imgSrc, srcset: '', sizes: '' };
+// caminhos absolutos
+const asset = (p) => p.startsWith('/') ? p : '/' + p;
 
-  // g01.jpg -> g01-640.jpg, g01-1024.jpg, g01-1600.jpg
+// srcset/sizes com conjuntos diferentes para hero e grid
+function buildResponsive(imgSrc, kind='grid', sizes = GRID_SIZES) {
+  if (!HAS_VARIANTS) return { src: asset(imgSrc), srcset: '', sizes };
   const m = imgSrc.match(/^(.*?)(\.[a-zA-Z0-9]+)$/);
-  if (!m) return { src: imgSrc, srcset: '', sizes: '' };
+  if (!m) return { src: asset(imgSrc), srcset: '', sizes };
   const base = m[1], ext = m[2];
-  const s640 = `${base}-640${ext}`;
-  const s1024 = `${base}-1024${ext}`;
-  const s1600 = `${base}-1600${ext}`;
-  const srcset = `${s640} 640w, ${s1024} 1024w, ${s1600} 1600w, ${imgSrc} 2000w`;
-  return { src: imgSrc, srcset, sizes };
+  const widths = kind === 'hero' ? [1920,2560,3840] : [640,1024,1600];
+  const srcset = widths.map(w => `${asset(`${base}-${w}${ext}`)} ${w}w`).join(', ');
+  return { src: asset(imgSrc), srcset, sizes };
 }
 
-/** Cria uma tag IMG pronta (com decoding, loading, fetchpriority e width/height opcionais) */
-function imgTag({src, alt, eager=false, sizes=GRID_SIZES, w=1600, h=1067}) {
-  const r = buildResponsive(src, sizes);
+// cria <img> (width/height opcionais)
+function imgTag({src, alt, eager=false, kind='grid', sizes=GRID_SIZES, w=null, h=null}) {
+  const r = buildResponsive(src, kind, sizes);
   const fp = eager ? 'high' : 'auto';
+  const wh = (w && h) ? ` width="${w}" height="${h}"` : '';
   return `
     <img
       src="${r.src}"
@@ -64,62 +62,65 @@ function imgTag({src, alt, eager=false, sizes=GRID_SIZES, w=1600, h=1067}) {
       alt="${alt}"
       ${eager ? '' : 'loading="lazy"'}
       decoding="async"
-      fetchpriority="${fp}"
-      width="${w}" height="${h}" />`;
+      fetchpriority="${fp}"${wh} />`;
 }
 
-/* =========================
- *  Header – estado no scroll
- * ========================= */
+$('#year') && ($('#year').textContent = new Date().getFullYear());
+
+// Header elev
 const header = document.querySelector('[data-header]');
 const onScroll = () => header?.setAttribute('data-elevated', window.scrollY > 10);
-onScroll();
-addEventListener('scroll', onScroll, { passive: true });
+onScroll(); addEventListener('scroll', onScroll, {passive:true});
 
-/* =========================
- *  Menu mobile
- * ========================= */
+// Menu mobile
 const navToggle = $('.nav-toggle');
 const overlay = document.querySelector('[data-overlay]');
 const navList = $('.nav-list');
-
 function setMenu(open){
   const expanded = !!open;
   navToggle?.setAttribute('aria-expanded', expanded);
-  if (overlay) overlay.hidden = !expanded;
+  if(overlay) overlay.hidden = !expanded;
   document.body.style.overflow = expanded ? 'hidden' : '';
   navList?.classList.toggle('is-open', expanded);
 }
-navToggle?.addEventListener('click', () => setMenu(navToggle.getAttribute('aria-expanded') !== 'true'));
-overlay?.addEventListener('click', () => setMenu(false));
+navToggle?.addEventListener('click', ()=> setMenu(navToggle.getAttribute('aria-expanded') !== 'true'));
+overlay?.addEventListener('click', ()=> setMenu(false));
 
-/* =========================
- *  HERO – carrossel
- * ========================= */
+// ===== HERO (home) =====
 const slidesWrap = $('#slides');
-if (slidesWrap) {
+if (slidesWrap){
   const left = $('.arrow-left');
   const right = $('.arrow-right');
   const currentEl = $('#heroCurrent');
   const totalEl = $('#heroTotal');
   const pad2 = n => String(n).padStart(2,'0');
 
-  function pickHeroImages() {
+  const HERO = (function(){
     const g = IMAGES.filter(i=>i.cat==='gestante').slice(0,5);
     const r = IMAGES.filter(i=>i.cat==='revelacao').slice(0,5);
-    const mixed=[]; 
-    for (let i=0;i<5;i++) { if (g[i]) mixed.push(g[i]); if (r[i]) mixed.push(r[i]); }
+    const mixed=[]; for (let i=0;i<5;i++){ if(g[i]) mixed.push(g[i]); if(r[i]) mixed.push(r[i]); }
     return mixed;
-  }
+  })();
 
-  const HERO = pickHeroImages();
+  // Preload do primeiro slide
+  try {
+    const first = HERO[0];
+    if (first) {
+      const r = buildResponsive(first.src, 'hero', '100vw');
+      const link = document.createElement('link');
+      link.rel='preload'; link.as='image'; link.href=r.src;
+      if (r.srcset) link.setAttribute('imagesrcset', r.srcset);
+      link.setAttribute('imagesizes','100vw');
+      document.head.appendChild(link);
+    }
+  } catch(e){}
+
   slidesWrap.innerHTML = HERO.map((it,idx)=>`
     <article class="slide ${idx===0?'is-active':''}">
       <picture>
-        ${imgTag({src: it.src, alt: it.alt, eager: idx===0, sizes: '(min-width:1024px) 80vw, 100vw', w: 1920, h: 1080})}
+        ${imgTag({src: it.src, alt: it.alt, eager: idx===0, kind:'hero', sizes: '100vw'})}
       </picture>
-    </article>
-  `).join('');
+    </article>`).join('');
 
   let index=0;
   const total=HERO.length;
@@ -127,133 +128,199 @@ if (slidesWrap) {
   totalEl && (totalEl.textContent = pad2(total));
   currentEl && (currentEl.textContent = pad2(1));
 
-  function show(i){
-    const list = slides();
-    list[index].classList.remove('is-active');
-    index = (i+total)%total;
-    list[index].classList.add('is-active');
-    currentEl && (currentEl.textContent = pad2(index+1));
+  // Pré-carrega sem bloquear (eager) com prioridade controlada
+  function prime(i, priority='low'){
+    const s = slides()[i];
+    const img = s && s.querySelector('img');
+    if (!img) return;
+    img.loading = 'eager';
+    img.fetchPriority = priority; // 'high' p/ os próximos, 'low' p/ os demais
+    if (img.decode) img.decode().catch(()=>{});
   }
 
-  left?.addEventListener('click', ()=> show(index-1));
-  right?.addEventListener('click', ()=> show(index+1));
+  // prime os 3 primeiros de cara (alta p/ 1º e 2º)
+  prime(0, 'high'); prime(1, 'high'); prime(2, 'low');
+  // e o resto em baixa prioridade
+  for (let i=3;i<total;i++) prime(i, 'low');
 
+  function show(i){
+    const next = (i+total)%total;
+    slides()[index].classList.remove('is-active');
+    index = next;
+    slides()[index].classList.add('is-active');
+    currentEl && (currentEl.textContent = pad2(index+1));
+    // sempre prepara o seguinte
+    prime((index+1)%total, 'high');
+  }
+
+  left?.addEventListener('click', ()=> { show(index-1); reset(); });
+  right?.addEventListener('click', ()=> { show(index+1); reset(); });
   document.addEventListener('keydown', (e)=>{ 
-    if (e.key==='ArrowLeft') show(index-1);
-    if (e.key==='ArrowRight') show(index+1);
-    if (e.key==='Escape') setMenu(false);
+    if(e.key==='ArrowLeft'){ show(index-1); reset(); }
+    if(e.key==='ArrowRight'){ show(index+1); reset(); }
+    if(e.key==='Escape') setMenu(false);
   });
 
-  // auto-play com pausa ao passar o mouse e quando a aba perde foco
-  let auto = setInterval(()=> show(index+1), 5500);
-  const pause = ()=> { clearInterval(auto); auto = null; };
-  const resume = ()=> { if (!auto) auto = setInterval(()=> show(index+1), 5500); };
-  $('.hero-carousel')?.addEventListener('mouseenter', pause);
-  $('.hero-carousel')?.addEventListener('mouseleave', resume);
-  document.addEventListener('visibilitychange', ()=> document.hidden ? pause() : resume());
+  // ===== Autoplay exatamente a cada 5s =====
+  let timer=null, paused=false;
+  const T = 5000;
+  const tick = ()=> { show(index+1); schedule(); };
+  const schedule = ()=> { timer = setTimeout(tick, T); };
+  const start = ()=> { if (!timer && !paused) schedule(); };
+  const stop  = ()=> { if (timer){ clearTimeout(timer); timer=null; } };
+  const reset = ()=> { stop(); start(); };
+
+  start();
+
+  const hero = document.querySelector('.hero-carousel');
+  hero?.addEventListener('pointerenter', ()=>{ paused=true; stop(); }, {passive:true});
+  hero?.addEventListener('pointerleave', ()=>{ paused=false; start(); }, {passive:true});
+  document.addEventListener('visibilitychange', ()=>{ document.hidden ? (paused=true, stop()) : (paused=false, start()); });
 
   // swipe
   let x0=null;
   slidesWrap.addEventListener('touchstart', e=> x0 = e.touches[0].clientX, {passive:true});
   slidesWrap.addEventListener('touchend', e=>{
-    if (x0===null) return;
-    const dx = e.changedTouches[0].clientX - x0;
-    x0=null;
-    if (Math.abs(dx)>40){ dx>0?show(index-1):show(index+1);}
+    if(x0===null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0=null;
+    if(Math.abs(dx)>40){ dx>0?show(index-1):show(index+1); reset(); }
   });
 }
 
-/* =========================
- *  Portfólio – render + filtro
- * ========================= */
+// ===== PORTFÓLIO =====  (layout justificado)
 const grid = $('#portfolioGrid');
 const controls = $('.portfolio-controls');
 
 if (grid) {
-  // Render dos cards
-  const render = (filter = 'all') => {
-    const list = IMAGES.filter(i => filter === 'all' ? true : i.cat === filter);
-    grid.dataset.filter = filter;
+  // altura desejada por breakpoint
+  const targetHeight = () =>
+    window.innerWidth >= 1280 ? 320 :
+    window.innerWidth >= 880  ? 260 :
+    window.innerWidth >= 560  ? 220 : 180;
 
-    grid.innerHTML = list.map(i => `
-      <figure class="portfolio-card">
+  const gap = 16; // igual ao CSS (.jg-row gap)
+
+  function flushRow(row, rowAspectSum, isLast) {
+    if (!row.length) return;
+
+    const containerWidth = grid.clientWidth;
+    const totalGaps = gap * (row.length - 1);
+    const rawWidth = rowAspectSum * targetHeight();
+    let scale = (containerWidth - totalGaps) / rawWidth;
+    if (isLast) scale = Math.min(scale, 1); // última linha não estica demais
+
+    const h = Math.round(targetHeight() * scale);
+
+    const rowEl = document.createElement('div');
+    rowEl.className = 'jg-row';
+
+    row.forEach(it => {
+      const w = Math.round(h * it.aspect);
+      const fig = document.createElement('figure');
+      fig.className = 'portfolio-card';
+      fig.style.flex = `0 0 ${w}px`;
+      fig.style.height = `${h}px`;
+      fig.innerHTML = `
         <picture>
-          ${imgTag({ src: i.src, alt: i.alt, eager: false })}
-        </picture>
-      </figure>
-    `).join('');
+          ${imgTag({
+            src: it.src,
+            alt: it.alt,
+            eager: false,
+            kind: 'grid',
+            sizes: `(min-width:1280px) ${w}px, (min-width:880px) ${w}px, 100vw`
+          })}
+        </picture>`;
+      rowEl.appendChild(fig);
+    });
+
+    grid.appendChild(rowEl);
+  }
+
+  function renderJustified(list) {
+    grid.innerHTML = '';
+    const items = list.map(it => ({...it, aspect: 1.5}));
+
+    // coletar proporção real de cada foto
+    const loaders = items.map((it, idx) => new Promise(resolve => {
+      const img = new Image();
+      img.src = asset(it.src);
+      img.onload = () => { items[idx].aspect = (img.naturalWidth||3)/(img.naturalHeight||2); resolve(); };
+      img.onerror = () => resolve();
+    }));
+
+    Promise.all(loaders).then(() => {
+      let row = [], sum = 0;
+      items.forEach(it => {
+        row.push(it); sum += it.aspect;
+        const expected = sum * targetHeight() + gap * (row.length - 1);
+        if (expected >= grid.clientWidth) {
+          flushRow(row, sum, false);
+          row = []; sum = 0;
+        }
+      });
+      flushRow(row, sum, true); // última linha
+    });
+  }
+
+  const render = (filter='all') => {
+    const list = IMAGES.filter(i => filter==='all' ? true : i.cat===filter);
+    grid.dataset.filter = filter;
+    renderJustified(list);
   };
 
-  // inicial (respeita data-filter do HTML)
   render(grid.dataset.filter || 'all');
 
-  // delegação de clique nas pílulas
+  // filtros
   if (controls) {
     controls.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-filter]');
       if (!btn) return;
-
       controls.querySelectorAll('button.pill').forEach(b => {
         const active = b === btn;
         b.classList.toggle('is-active', active);
         b.setAttribute('aria-selected', active ? 'true' : 'false');
         b.setAttribute('tabindex', active ? '0' : '-1');
       });
-
       render(btn.dataset.filter || 'all');
     });
-
-    // teclado (Enter/Espaço)
     controls.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.key!=='Enter' && e.key!==' ') return;
       const btn = e.target.closest('button[data-filter]');
       if (!btn) return;
-      e.preventDefault();
-      btn.click();
+      e.preventDefault(); btn.click();
     });
   }
+
+  // reflow no resize
+  let rId;
+  addEventListener('resize', () => {
+    clearTimeout(rId);
+    rId = setTimeout(() => render(grid.dataset.filter || 'all'), 150);
+  }, {passive:true});
 }
 
-/* =========================
- *  Reveal – animações de entrada
- * ========================= */
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(en => en.isIntersecting && en.target.classList.add('is-visible'));
-}, { threshold:.12 });
+/* Reveal on view */
+const io = new IntersectionObserver((entries)=>{ 
+  entries.forEach(en=> en.isIntersecting && en.target.classList.add('is-visible')); 
+}, {threshold:.12});
 $$('[data-reveal]').forEach(el=> io.observe(el));
 
-/* =========================
- *  Qualidade/perf extra
- * ========================= */
-// Evita seleção nos números do heropager
+/* UX */
 const heroPag = document.querySelector('.hero-pagination');
-if (heroPag) {
-  heroPag.style.userSelect='none';
-  heroPag.style.webkitUserSelect='none';
-}
+if(heroPag){ heroPag.style.userSelect='none'; heroPag.style.webkitUserSelect='none'; }
 
-// Dropdown (hover desktop, click mobile)
+/* Dropdown */
 document.querySelectorAll('.dropdown').forEach(dd => {
   const btn = dd.querySelector('.dropdown-toggle');
   const menu = dd.querySelector('.dropdown-menu');
-
-  function openMenu() { dd.classList.add('open'); }
-  function closeMenu() { dd.classList.remove('open'); }
-
-  if (window.matchMedia("(min-width: 1025px)").matches) {
+  function openMenu(){ dd.classList.add('open'); }
+  function closeMenu(){ dd.classList.remove('open'); }
+  if (window.matchMedia("(min-width:1025px)").matches) {
     btn?.addEventListener('mouseenter', openMenu);
     menu?.addEventListener('mouseenter', openMenu);
-    btn?.addEventListener('mouseleave', () => setTimeout(() => {
-      if (!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();
-    }, 100));
-    menu?.addEventListener('mouseleave', () => setTimeout(() => {
-      if (!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();
-    }, 100));
+    btn?.addEventListener('mouseleave', ()=> setTimeout(()=>{ if(!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();},100));
+    menu?.addEventListener('mouseleave', ()=> setTimeout(()=>{ if(!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();},100));
   } else {
-    btn?.addEventListener('click', e => {
-      e.preventDefault();
-      dd.classList.toggle('open');
-      btn.setAttribute('aria-expanded', dd.classList.contains('open'));
-    });
+    btn?.addEventListener('click', e => { e.preventDefault(); dd.classList.toggle('open'); btn.setAttribute('aria-expanded', dd.classList.contains('open')); });
   }
 });
