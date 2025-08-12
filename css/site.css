@@ -121,6 +121,55 @@ img{max-width:100%;display:block}
 .hero-pagination{user-select:none;cursor:default}
 .hero-pagination span{pointer-events:none}
 
+/* --- Ícones do bloco de contato --- */
+.social-icons{display:flex;gap:.6rem;margin-top:.6rem}
+.icon-btn{
+  width:44px;height:44px;border-radius:999px;display:inline-flex;
+  align-items:center;justify-content:center;background:#fff;color:#111;
+  border:1px solid var(--border);box-shadow:0 6px 18px rgba(0,0,0,.06);
+  text-decoration:none;transition:transform .15s ease, box-shadow .15s ease;
+}
+.icon-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.10)}
+.icon-btn svg{width:22px;height:22px}
+.icon-btn.wa{color:#25D366}
+.icon-btn.ig{color:#111}
+
+/* --- WhatsApp flutuante --- */
+.fab-whatsapp{
+  position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom));
+  width:60px;height:60px;border-radius:999px;background:#25D366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 14px 36px rgba(0,0,0,.2); z-index:70; text-decoration:none;
+}
+.fab-whatsapp svg{width:28px;height:28px}
+
+/* --- Voltar ao topo --- */
+.to-top{
+  position:fixed; right:22px;
+  bottom:calc(18px + env(safe-area-inset-bottom) + 76px); /* acima do Whats */
+  width:48px;height:48px;border-radius:999px;border:1px solid var(--border);
+  background:#fff;color:#111;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 22px rgba(0,0,0,.10); cursor:pointer; z-index:70;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.to-top svg{width:22px;height:22px;} /* seta para cima */
+
+/* quando virar visível */
+.to-top.is-visible{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@media (max-width:560px){
+  .fab-whatsapp{width:58px;height:58px}
+  .to-top{right:20px}
+}
+
+
 /* Responsive */
 @media (max-width:1024px){
   .nav-toggle{display:block}

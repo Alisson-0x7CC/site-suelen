@@ -340,3 +340,38 @@ document.querySelectorAll('.dropdown').forEach(dd => {
     btn?.addEventListener('click', e => { e.preventDefault(); dd.classList.toggle('open'); btn.setAttribute('aria-expanded', dd.classList.contains('open')); });
   }
 });
+
+// UTM nos CTAs de WhatsApp (ícone da seção + flutuante)
+['whatsappCta','fabWhats'].forEach(id=>{
+  const a = document.getElementById(id);
+  if(!a) return;
+  try{
+    const u = new URL(a.href);
+    u.searchParams.set('utm_source','site');
+    u.searchParams.set('utm_medium', id === 'fabWhats' ? 'float' : 'contact');
+    u.searchParams.set('utm_campaign','whatsapp');
+    a.href = u.toString();
+  }catch(e){}
+});
+
+// VOLTAR AO TOPO — use apenas este bloco
+const toTop = document.getElementById('toTop');
+
+if (toTop) {
+  const SHOW_AFTER = 300; // px (ajuste se quiser)
+
+  function updateToTop() {
+    if (window.scrollY > SHOW_AFTER) {
+      toTop.classList.add('is-visible');
+    } else {
+      toTop.classList.remove('is-visible');
+    }
+  }
+
+  window.addEventListener('scroll', updateToTop, { passive: true });
+  updateToTop(); // estado inicial
+
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
