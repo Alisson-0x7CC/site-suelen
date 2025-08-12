@@ -121,7 +121,7 @@ img{max-width:100%;display:block}
 .hero-pagination{user-select:none;cursor:default}
 .hero-pagination span{pointer-events:none}
 
-/* --- Ícones do bloco de contato --- */
+/* --- Ícones do bloco de contato (agora com <img>) --- */
 .social-icons{display:flex;gap:.6rem;margin-top:.6rem}
 .icon-btn{
   width:44px;height:44px;border-radius:999px;display:inline-flex;
@@ -130,9 +130,25 @@ img{max-width:100%;display:block}
   text-decoration:none;transition:transform .15s ease, box-shadow .15s ease;
 }
 .icon-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.10)}
-.icon-btn svg{width:22px;height:22px}
-.icon-btn.wa{color:#25D366}
-.icon-btn.ig{color:#111}
+/* ícone como imagem branca */
+.icon-btn img{width:22px;height:22px;display:block}
+/* WhatsApp oficial: fundo verde */
+.icon-btn.wa{
+  background:#25D366;
+  border-color:#25D366;
+  color:#fff;
+}
+/* Instagram: gradiente oficial no fundo */
+.icon-btn.ig{
+  border:none;
+  color:#fff;
+  background:
+    radial-gradient(40% 40% at 30% 30%, #FEDA77 0%, rgba(254,218,119,0) 60%),
+    radial-gradient(45% 45% at 70% 70%, #8134AF 0%, rgba(129,52,175,0) 60%),
+    radial-gradient(70% 70% at 30% 70%, #F58529 0%, rgba(245,133,41,0) 60%),
+    radial-gradient(60% 60% at 70% 30%, #DD2A7B 0%, rgba(221,42,123,0) 60%),
+    #515BD4;
+}
 
 /* --- WhatsApp flutuante --- */
 .fab-whatsapp{
@@ -141,7 +157,8 @@ img{max-width:100%;display:block}
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 14px 36px rgba(0,0,0,.2); z-index:70; text-decoration:none;
 }
-.fab-whatsapp svg{width:28px;height:28px}
+/* ícone como imagem branca no flutuante */
+.fab-whatsapp img{width:28px;height:28px}
 
 /* --- Voltar ao topo --- */
 .to-top{
@@ -168,7 +185,6 @@ img{max-width:100%;display:block}
   .fab-whatsapp{width:58px;height:58px}
   .to-top{right:20px}
 }
-
 
 /* Responsive */
 @media (max-width:1024px){
