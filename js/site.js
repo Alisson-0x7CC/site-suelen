@@ -72,19 +72,35 @@ const header = document.querySelector('[data-header]');
 const onScroll = () => header?.setAttribute('data-elevated', window.scrollY > 10);
 onScroll(); addEventListener('scroll', onScroll, {passive:true});
 
-// Menu mobile
-const navToggle = $('.nav-toggle');
-const overlay = document.querySelector('[data-overlay]');
-const navList = $('.nav-list');
+// ===== Menu mobile (.topbar e .topbarb) =====
+const navToggle = document.querySelector('.nav-toggle, .nav-toggleb');
+let overlay = document.querySelector('[data-overlay]');
+const navList  = document.querySelector('.nav-list, .nav-listb');
+
+// cria o overlay se não existir
+if (!overlay) {
+  overlay = document.createElement('div');
+  overlay.className = 'nav-overlay';
+  overlay.setAttribute('data-overlay','');
+  overlay.hidden = true;
+  document.body.appendChild(overlay);
+}
+
 function setMenu(open){
   const expanded = !!open;
   navToggle?.setAttribute('aria-expanded', expanded);
-  if(overlay) overlay.hidden = !expanded;
+  overlay.hidden = !expanded;
   document.body.style.overflow = expanded ? 'hidden' : '';
   navList?.classList.toggle('is-open', expanded);
 }
-navToggle?.addEventListener('click', ()=> setMenu(navToggle.getAttribute('aria-expanded') !== 'true'));
-overlay?.addEventListener('click', ()=> setMenu(false));
+
+navToggle?.addEventListener('click', () => {
+  const open = navToggle.getAttribute('aria-expanded') !== 'true';
+  setMenu(open);
+});
+
+overlay?.addEventListener('click', () => setMenu(false));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
 // ===== HERO (home) =====
 const slidesWrap = $('#slides');
