@@ -358,6 +358,7 @@ document.querySelectorAll('.dropdown').forEach(dd => {
 const toTop = document.getElementById('toTop');
 
 if (toTop) {
+  toTop.removeAttribute('hidden'); // <- add isto
   const SHOW_AFTER = 300; // px (ajuste se quiser)
 
   function updateToTop() {

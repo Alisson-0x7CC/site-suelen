@@ -79,6 +79,22 @@ img{max-width:100%;display:block}
 .pill{border:1px solid var(--border);background:#fff;border-radius:999px;padding:.4rem .8rem;cursor:pointer}
 .pill.is-active,.pill:hover{border-color:var(--accent)}
 
+/* ===== Depoimentos ===== */
+.testimonials .t-wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.t-card{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:1.25rem;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.t-quote{background:linear-gradient(180deg,rgba(17,17,17,.8),rgba(17,17,17,.6));color:#fff;border-radius:16px;padding:1.1rem 1.2rem;min-height:110px;display:flex;align-items:center;text-align:center;position:relative}
+.t-quote::after{content:"";position:absolute;left:42px;bottom:-10px;width:20px;height:20px;background:linear-gradient(180deg,rgba(17,17,17,.8),rgba(17,17,17,.6));transform:rotate(45deg);border-radius:4px}
+.t-meta{display:flex;gap:.8rem;align-items:center;margin-top:1.4rem}
+.t-avatar{width:56px;height:56px;border-radius:999px;object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.t-name{font-weight:700;color:#3a2f25}
+.t-role{font-size:.85rem;color:var(--muted)}
+.t-stars{display:flex;gap:.15rem;margin-top:.2rem;color:var(--accent)}
+.t-stars svg{width:18px;height:18px}
+
+@media (max-width:900px){.testimonials .t-wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.testimonials .t-wrap{grid-template-columns:1fr}}
+
+
 /* container vira colunas flex de linhas */
 .portfolio-grid{display:flex;flex-direction:column;gap:1rem}
 .jg-row{display:flex;gap:1rem}
@@ -180,6 +196,11 @@ img{max-width:100%;display:block}
   pointer-events: auto;
   transform: translateY(0);
 }
+
+/* pacotes.html — helpers mínimos */
+.h3mini{ text-align:center; font-size:1.35rem; margin:1.75rem 0 1rem; color:#3a2f25 }
+.containerb{ width:92%; max-width:1200px; margin:0 auto } /* largura padrão p/ topbar interna */
+
 
 @media (max-width:560px){
   .fab-whatsapp{width:58px;height:58px}
