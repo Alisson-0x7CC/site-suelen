@@ -96,7 +96,7 @@ img{max-width:100%;display:block}
 .bullets li{margin:.35rem 0;color:var(--muted)}
 .pricing-cta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:1rem}
 .price{letter-spacing:.4em;color:#3a2f25}
-.link-underline{color:var(--accent);text-decoration:none;letter-spacing:.2em;text-transform:uppercase}
+.link-underline{color:var(--accent);text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size: 15px;}
 .link-underline:hover{text-decoration:underline}
 
 /* Contact */
