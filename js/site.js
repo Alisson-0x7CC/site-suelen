@@ -32,6 +32,22 @@ const IMAGES = [
 const HAS_VARIANTS = true;
 const GRID_SIZES = '(min-width:1280px) 25vw, (min-width:880px) 33vw, (min-width:640px) 50vw, 100vw';
 
+// Controle de layout: usar proporção natural?
+const USE_NATURAL_ASPECT = false; // false = linhas mais alinhadas (thumbs ~1.5)
+
+// Mistura fixa entre gestante e revelação (não muda a cada load)
+const _G = IMAGES.filter(i => i.cat === 'gestante');
+const _R = IMAGES.filter(i => i.cat === 'revelacao');
+const IMAGES_MIXED = (() => {
+  const out = [];
+  const max = Math.max(_G.length, _R.length);
+  for (let i = 0; i < max; i++) {
+    if (_G[i]) out.push(_G[i]);
+    if (_R[i]) out.push(_R[i]);
+  }
+  return out;
+})();
+
 const $  = (s, ctx=document) => ctx.querySelector(s);
 const $$ = (s, ctx=document) => Array.from(ctx.querySelectorAll(s));
 
@@ -253,36 +269,41 @@ if (grid) {
   }
 
   function renderJustified(list) {
-    grid.innerHTML = '';
-    const items = list.map(it => ({...it, aspect: 1.5}));
+  grid.innerHTML = '';
+  const items = list.map(it => ({ ...it, aspect: 1.5 }));
 
-    // coletar proporção real de cada foto
+  function layout() {
+    let row = [], sum = 0;
+    items.forEach(it => {
+      row.push(it); sum += it.aspect;
+      const expected = sum * targetHeight() + gap * (row.length - 1);
+      if (expected >= grid.clientWidth) {
+        flushRow(row, sum, false);
+        row = []; sum = 0;
+      }
+    });
+    if (row.length) flushRow(row, sum, true); // última linha
+  }
+
+  if (USE_NATURAL_ASPECT) {
     const loaders = items.map((it, idx) => new Promise(resolve => {
       const img = new Image();
       img.src = asset(it.src);
       img.onload = () => { items[idx].aspect = (img.naturalWidth||3)/(img.naturalHeight||2); resolve(); };
       img.onerror = () => resolve();
     }));
-
-    Promise.all(loaders).then(() => {
-      let row = [], sum = 0;
-      items.forEach(it => {
-        row.push(it); sum += it.aspect;
-        const expected = sum * targetHeight() + gap * (row.length - 1);
-        if (expected >= grid.clientWidth) {
-          flushRow(row, sum, false);
-          row = []; sum = 0;
-        }
-      });
-      flushRow(row, sum, true); // última linha
-    });
+    Promise.all(loaders).then(layout);
+  } else {
+    layout(); // usa aspecto fixo p/ alinhar mais
   }
+}
 
-  const render = (filter='all') => {
-    const list = IMAGES.filter(i => filter==='all' ? true : i.cat===filter);
-    grid.dataset.filter = filter;
-    renderJustified(list);
-  };
+
+const render = (filter='all') => {
+  const list = (filter === 'all') ? IMAGES_MIXED : IMAGES.filter(i => i.cat === filter);
+  grid.dataset.filter = filter;
+  renderJustified(list);
+};
 
   render(grid.dataset.filter || 'all');
 

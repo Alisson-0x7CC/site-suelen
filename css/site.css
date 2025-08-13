@@ -222,3 +222,29 @@ img{max-width:100%;display:block}
 @media (max-width:900px){.about-grid,.pricing .pricing-row{grid-template-columns:1fr}}
 @media (max-width:560px){}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* Mini-grade 2x2 para os blocos de portfólio em Pacotes */
+.mini-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1rem;
+}
+.mini-grid .portfolio-card{
+  height:auto;
+  aspect-ratio:4/3; /* mantém retângulo bonito; usa object-fit do site */
+}
+@media (max-width:560px){
+  .mini-grid{ grid-template-columns:1fr; } /* 1x1 no mobile */
+}
+
+/* Depoimentos mais delicados */
+.t-card{ box-shadow:0 6px 16px rgba(0,0,0,.04); }
+.t-quote{
+  background: var(--bg);      /* bege do site */
+  color:#3a2f25;              /* marrom do site */
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1rem 1.25rem;
+}
+.t-quote::after{ content:none; } /* remove “rabinho” agressivo */
