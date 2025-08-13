@@ -9,6 +9,7 @@ const IMAGES = [
   {src:'images/gestante/g08.jpg', alt:'Silhueta PB estúdio', cat:'gestante'},
   {src:'images/gestante/g09.jpg', alt:'Casal testa com testa', cat:'gestante'},
   {src:'images/gestante/g10.jpg', alt:'Casal sorrindo - por do sol', cat:'gestante'},
+  {src:'images/gestante/g11.jpg', alt:'sorrindo - por do sol', cat:'gestante'},
   {src:'images/revelacao/r01.jpg', alt:'Maos na massa PB', cat:'revelacao'},
   {src:'images/revelacao/r02.jpg', alt:'Casal vendando cabeça', cat:'revelacao'},
   {src:'images/revelacao/r03.jpg', alt:'Casal vendado rindo PB', cat:'revelacao'},
@@ -21,6 +22,7 @@ const IMAGES = [
   {src:'images/revelacao/r10.jpg', alt:'Casal ajustando vendas', cat:'revelacao'},
   {src:'images/revelacao/r11.jpg', alt:'Familia se abraçando', cat:'revelacao'},
   {src:'images/revelacao/r12.jpg', alt:'Casal tirando vendas', cat:'revelacao'},
+  {src:'images/revelacao/r13.jpg', alt:'Casal vendas', cat:'revelacao'},
 ];
 
 /* ===== Config responsiva =====
