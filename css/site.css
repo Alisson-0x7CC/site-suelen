@@ -79,15 +79,6 @@ img{max-width:100%;display:block}
 .pill{border:1px solid var(--border);background:#fff;border-radius:999px;padding:.4rem .8rem;cursor:pointer}
 .pill.is-active,.pill:hover{border-color:var(--accent)}
 
-/* container vira colunas flex de linhas */
-.portfolio-grid{display:flex;flex-direction:column;gap:1rem}
-.jg-row{display:flex;gap:1rem}
-
-.portfolio-card{margin:0;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06);background:#fff}
-.portfolio-card picture,
-.portfolio-card img{display:block;width:100%;height:100%}
-.portfolio-card img{object-fit:cover}
-
 /* ===== Depoimentos ===== */
 .testimonials .t-wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
 .t-card{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:1.25rem;box-shadow:0 8px 24px rgba(0,0,0,.06)}
@@ -100,14 +91,18 @@ img{max-width:100%;display:block}
 .t-stars{display:flex;gap:.15rem;margin-top:.2rem;color:var(--accent)}
 .t-stars svg{width:18px;height:18px}
 
-/* Variante moderna para depoimentos (balão mais arredondado) */
-.t-card.mod{ border-radius:22px }
-.t-card.mod .t-quote{ border-radius:18px; background:linear-gradient(180deg, rgba(58,47,37,.92), rgba(58,47,37,.84)) }
-.t-card.mod .t-quote::after{ left:48px; width:22px; height:22px; background:linear-gradient(180deg, rgba(58,47,37,.92), rgba(58,47,37,.84)) }
-.t-card.mod .t-stars{ color:var(--accent) }
-
 @media (max-width:900px){.testimonials .t-wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.testimonials .t-wrap{grid-template-columns:1fr}}
+
+
+/* container vira colunas flex de linhas */
+.portfolio-grid{display:flex;flex-direction:column;gap:1rem}
+.jg-row{display:flex;gap:1rem}
+
+.portfolio-card{margin:0;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06);background:#fff}
+.portfolio-card picture,
+.portfolio-card img{display:block;width:100%;height:100%}
+.portfolio-card img{object-fit:cover}
 
 /* Pricing */
 .pricing .pricing-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding:2rem 0;border-bottom:1px solid var(--border)}
@@ -117,7 +112,7 @@ img{max-width:100%;display:block}
 .bullets li{margin:.35rem 0;color:var(--muted)}
 .pricing-cta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:1rem}
 .price{letter-spacing:.4em;color:#3a2f25}
-.link-underline{color:var(--accent);text-decoration:none;letter-spacing:.2em;text-transform:uppercase}
+.link-underline{color:var(--accent);text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size: 15px;}
 .link-underline:hover{text-decoration:underline}
 
 /* Contact */
@@ -193,8 +188,19 @@ img{max-width:100%;display:block}
   transform: translateY(8px);
   transition: opacity .25s ease, transform .25s ease;
 }
-.to-top svg{width:22px;height:22px}
-.to-top.is-visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.to-top svg{width:22px;height:22px;} /* seta para cima */
+
+/* quando virar visível */
+.to-top.is-visible{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* pacotes.html — helpers mínimos */
+.h3mini{ text-align:center; font-size:1.35rem; margin:1.75rem 0 1rem; color:#3a2f25 }
+.containerb{ width:92%; max-width:1200px; margin:0 auto } /* largura padrão p/ topbar interna */
+
 
 @media (max-width:560px){
   .fab-whatsapp{width:58px;height:58px}
@@ -213,16 +219,6 @@ img{max-width:100%;display:block}
   .nav-listb.is-open{transform:translateX(0)}
   .nav-linkb{color:#111}
 }
-@media (max-width:900px){
-  .about-grid,.pricing .pricing-row{grid-template-columns:1fr}
-  /* Mobile: manter a ordem "título + infos" acima da foto, independente da ordem no HTML */
-  .pricing .pricing-row{
-    grid-template-areas:
-      "text"
-      "media";
-  }
-  .pricing .pricing-row .pricing-text{ grid-area:text }
-  .pricing .pricing-row .pricing-media{ grid-area:media }
-}
+@media (max-width:900px){.about-grid,.pricing .pricing-row{grid-template-columns:1fr}}
 @media (max-width:560px){}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
