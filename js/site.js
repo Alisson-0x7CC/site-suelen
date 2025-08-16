@@ -399,3 +399,65 @@ if (toTop) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
+
+// Pacotes — “Mais detalhes” só p/ .more-block
+(function(){
+  document.querySelectorAll('.pricing .pricing-row').forEach(row=>{
+    const more = row.querySelector('.more-block');
+    if (!more) return; // sem bloco extra, sem botão
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'toggle-more';
+    btn.setAttribute('aria-expanded','false');
+    btn.textContent = 'Mais detalhes';
+
+    const anchor = row.querySelector('.pricing-cta') || more;
+    anchor.parentNode.insertBefore(btn, anchor);
+
+    btn.addEventListener('click', ()=>{
+      row.classList.toggle('is-open');
+      const open = row.classList.contains('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'Menos detalhes' : 'Mais detalhes';
+    });
+  });
+})();
+
+
+// site.js (no final)
+const form = document.getElementById('contactForm');
+const note = document.getElementById('formNote');
+
+if (form && note){
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true; note.textContent = 'Enviando...';
+
+    try{
+      const res  = await fetch(form.action, { method:'POST', body:new FormData(form) });
+      const data = await res.json().catch(()=> ({}));
+      if(res.ok && data?.ok !== false){
+        note.textContent = data?.message || 'Mensagem enviada! Responderemos em breve.';
+        form.reset();
+      }else{
+        throw new Error(data?.message || 'Não foi possível enviar agora. Tente novamente.');
+      }
+    }catch(err){
+      note.textContent = err.message;
+    }finally{
+      btn.disabled = false;
+    }
+  });
+}
+
+if (note) {
+  const p = new URLSearchParams(location.search);
+  if (p.has('sent'))  note.textContent = 'Mensagem enviada! Responderemos em breve.';
+  if (p.has('error')) note.textContent = 'Não foi possível enviar agora. Tente novamente.';
+  // limpa a query da URL
+  if (p.has('sent') || p.has('error')) {
+    history.replaceState({}, '', location.pathname + location.hash);
+  }
+}

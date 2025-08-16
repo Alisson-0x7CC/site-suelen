@@ -21,7 +21,7 @@ if ($name === "" || !filter_var($email, FILTER_VALIDATE_EMAIL) || $message === "
 }
 
 // Destino
-$to = "suelenvicent@gmail.com"; // <-- seu e-mail de destino
+$to = "alissonmaciel966@gmail.com"; // <-- seu e-mail de destino
 
 // Assunto
 $subject = "Novo contato de {$name}";
@@ -50,4 +50,18 @@ if (@mail($to, $encodedSubject, $body, $headers, "-f {$from}")) {
 } else {
   http_response_code(500);
   echo "Ocorreu um erro ao enviar a mensagem.";
+}
+
+$return = filter_input(INPUT_POST, 'return_to', FILTER_SANITIZE_URL) ?: '/index.html#contato';
+// opcional: força voltar pro mesmo site
+if (!preg_match('~^/|^https?://seu-dominio\.com~', $return)) { $return = '/index.html#contato'; }
+
+if ($sucesso) {
+  $sep = (strpos($return,'?') !== false) ? '&' : '?';
+  header('Location: ' . $return . $sep . 'sent=1');
+  exit;
+} else {
+  $sep = (strpos($return,'?') !== false) ? '&' : '?';
+  header('Location: ' . $return . $sep . 'error=1');
+  exit;
 }
