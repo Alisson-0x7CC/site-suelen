@@ -283,45 +283,46 @@ Memórias
 
 <section id="contato" class="section contact" data-reveal>
   <div class="container contact-grid">
-    <form id="contactForm" action="send-mail.php" method="POST" novalidate>
-      <div class="visually-hidden" aria-hidden="true">
-        <label>Não preencha: <input type="text" name="_honeypot" tabindex="-1"></label>
-      </div>
-      <label>Nome<input type="text" name="name" required autocomplete="name"></label>
-<div class="field">
-  <label for="email">E-mail</label>
-  <input id="email" type="email" name="email"
-         required autocomplete="email" inputmode="email"
-         placeholder="seu@email.com">
-</div>
-      <label>Mensagem<textarea name="message" rows="5" required></textarea></label>
 
+    <form id="contactForm" action="send-mail.php" method="POST">
+      <div class="visually-hidden" aria-hidden="true">
+        <label>Não preencha:
+          <input type="text" name="_honeypot" tabindex="-1" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="name">Nome</label>
+        <input id="name" type="text" name="name" required autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" name="email"
+               required autocomplete="email" inputmode="email"
+               placeholder="seu@email.com">
+      </div>
+
+      <div class="field">
+        <label for="message">Mensagem</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
 
       <input type="hidden" name="return_to" value="/index.html#contato">
-    <button type="submit">Enviar</button>
-    <p id="formNote" role="status" aria-live="polite"></p>
-  </form>
-<div>
-  <p><strong>E-mail:</strong>
-    <a href="mailto:suelenvicent@gmail.com">suelenvicent@gmail.com</a>
-  </p>
+      <button type="submit">Enviar</button>
+      <p id="formNote" role="status" aria-live="polite"></p>
+    </form>
 
-  <div class="social-icons">
-    <a class="icon-btn ig" href="https://www.instagram.com/suelenvicentefotografa/"
-      target="_blank" rel="noopener" aria-label="Instagram">
-      <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="">
-    </a>
+    <div class="contact-side">
+      <p><strong>E-mail:</strong>
+        <a href="mailto:suelenvicent@gmail.com">suelenvicent@gmail.com</a>
+      </p>
+      <!-- ícones/redes aqui -->
+    </div>
 
-    <a id="whatsappCta" class="icon-btn wa"
-      href="https://wa.me/5548999301282?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20ensaio."
-      target="_blank" rel="noopener" aria-label="WhatsApp">
-      <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
-    </a>
-  </div>
-</div>
-
-  </div>
+  </div> <!-- fecha .container contact-grid -->
 </section>
+
 
 </main>
 <footer class="footer"><div class="container"><p>© <span id="year"></span> Suélen Vicente — Todos os direitos reservados</p></div></footer>
