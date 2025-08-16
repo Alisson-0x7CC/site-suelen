@@ -91,25 +91,36 @@ const onScroll = () => header?.setAttribute('data-elevated', window.scrollY > 10
 onScroll(); addEventListener('scroll', onScroll, {passive:true});
 
 // ===== Menu mobile (.topbar e .topbarb) =====
-const navToggle = document.querySelector('.nav-toggle, .nav-toggleb');
+const navToggle =
+  document.querySelector('.nav-toggle') || document.querySelector('.nav-toggleb');
 let overlay = document.querySelector('[data-overlay]');
-const navList  = document.querySelector('.nav-list, .nav-listb');
+const navList =
+  document.querySelector('.nav-list') || document.querySelector('.nav-listb');
 
 // cria o overlay se não existir
 if (!overlay) {
   overlay = document.createElement('div');
   overlay.className = 'nav-overlay';
-  overlay.setAttribute('data-overlay','');
+  overlay.setAttribute('data-overlay', '');
   overlay.hidden = true;
   document.body.appendChild(overlay);
 }
 
-function setMenu(open){
+// fecha todos os submenus abertos
+function resetSubmenus(ctx = document) {
+  ctx.querySelectorAll('.has-submenu.open').forEach(li => {
+    li.classList.remove('open');
+    li.querySelector(':scope > a')?.setAttribute('aria-expanded', 'false');
+  });
+}
+
+function setMenu(open) {
   const expanded = !!open;
-  navToggle?.setAttribute('aria-expanded', expanded);
+  navToggle?.setAttribute('aria-expanded', String(expanded));
   overlay.hidden = !expanded;
   document.body.style.overflow = expanded ? 'hidden' : '';
   navList?.classList.toggle('is-open', expanded);
+  if (!expanded) resetSubmenus(navList); // << reseta ao fechar
 }
 
 navToggle?.addEventListener('click', () => {
@@ -119,6 +130,10 @@ navToggle?.addEventListener('click', () => {
 
 overlay?.addEventListener('click', () => setMenu(false));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+
+
+
 
 // ===== HERO (home) =====
 const slidesWrap = $('#slides');
@@ -349,20 +364,59 @@ const heroPag = document.querySelector('.hero-pagination');
 if(heroPag){ heroPag.style.userSelect='none'; heroPag.style.webkitUserSelect='none'; }
 
 /* Dropdown */
-document.querySelectorAll('.dropdown').forEach(dd => {
-  const btn = dd.querySelector('.dropdown-toggle');
-  const menu = dd.querySelector('.dropdown-menu');
-  function openMenu(){ dd.classList.add('open'); }
-  function closeMenu(){ dd.classList.remove('open'); }
-  if (window.matchMedia("(min-width:1025px)").matches) {
-    btn?.addEventListener('mouseenter', openMenu);
-    menu?.addEventListener('mouseenter', openMenu);
-    btn?.addEventListener('mouseleave', ()=> setTimeout(()=>{ if(!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();},100));
-    menu?.addEventListener('mouseleave', ()=> setTimeout(()=>{ if(!menu.matches(':hover') && !btn.matches(':hover')) closeMenu();},100));
+(() => {
+  const isDesktopPointer = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+  document.querySelectorAll('.dropdown').forEach(dd => {
+    const btn  = dd.querySelector('.dropdown-toggle');
+    const menu = dd.querySelector('.dropdown-menu');
+    if (!btn || !menu) return;
+
+    const open  = () => { dd.classList.add('open');  btn.setAttribute('aria-expanded','true');  };
+    const close = () => { dd.classList.remove('open'); btn.setAttribute('aria-expanded','false'); };
+
+    if (isDesktopPointer) {
+      // desktop: abre/fecha no hover (com pequeno delay ao sair)
+      let t;
+      dd.addEventListener('mouseenter', () => { clearTimeout(t); open(); });
+      dd.addEventListener('mouseleave', () => { t = setTimeout(close, 120); });
   } else {
-    btn?.addEventListener('click', e => { e.preventDefault(); dd.classList.toggle('open'); btn.setAttribute('aria-expanded', dd.classList.contains('open')); });
+    // MOBILE: clique abre/fecha e fecha irmãos
+    btn?.addEventListener('click', e => {
+      e.preventDefault();
+
+      // fecha irmãos abertos
+      dd.parentElement?.querySelectorAll('.dropdown.open').forEach(sib => {
+        if (sib !== dd) {
+          sib.classList.remove('open');
+          sib.querySelector('.dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // toggle do próprio
+      const willOpen = !dd.classList.contains('open');
+      dd.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
   }
-});
+
+  });
+})();
+
+// Mobile: tocar fora fecha dropdowns
+document.addEventListener('click', ev => {
+  if (window.matchMedia('(min-width:1025px)').matches) return;
+  const drawer = document.querySelector('.nav-list.is-open, .nav-listb.is-open');
+  if (!drawer) return;
+  if (ev.target.closest('.dropdown')) return;
+  drawer.querySelectorAll('.dropdown.open').forEach(li => {
+    li.classList.remove('open');
+    li.querySelector('.dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+  });
+}, true);
+
+
+
 
 // UTM nos CTAs de WhatsApp (ícone da seção + flutuante)
 ['whatsappCta','fabWhats'].forEach(id=>{
@@ -424,40 +478,82 @@ if (toTop) {
   });
 })();
 
+// ===== Submenu (desktop: hover | mobile: toggle instantâneo) =====
+(function () {
+  const mqMobile = window.matchMedia('(max-width:1024px)');
+  const isDesktopPointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-// site.js (no final)
-const form = document.getElementById('contactForm');
-const note = document.getElementById('formNote');
+  // Desktop: abre/fecha no hover
+  if (isDesktopPointer) {
+    document.querySelectorAll('.has-submenu').forEach(li => {
+      let t;
+      li.addEventListener('mouseenter', () => { clearTimeout(t); li.classList.add('open'); });
+      li.addEventListener('mouseleave', () => { t = setTimeout(() => li.classList.remove('open'), 120); });
+    });
+  }
 
-if (form && note){
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true; note.textContent = 'Enviando...';
+  // Mobile: 1º clique abre, 2º clique fecha (um único listener)
+  const TAP = window.PointerEvent ? 'pointerdown' : 'click';
 
-    try{
-      const res  = await fetch(form.action, { method:'POST', body:new FormData(form) });
-      const data = await res.json().catch(()=> ({}));
-      if(res.ok && data?.ok !== false){
-        note.textContent = data?.message || 'Mensagem enviada! Responderemos em breve.';
-        form.reset();
-      }else{
-        throw new Error(data?.message || 'Não foi possível enviar agora. Tente novamente.');
-      }
-    }catch(err){
-      note.textContent = err.message;
-    }finally{
-      btn.disabled = false;
-    }
+  document.querySelectorAll('.has-submenu > a').forEach(a => {
+    // no mobile o link-pai não navega
+    a.addEventListener('click', e => { if (mqMobile.matches) e.preventDefault(); }, true);
+
+    a.addEventListener(TAP, e => {
+      if (!mqMobile.matches) return; // desktop navega normal
+      e.preventDefault();
+      e.stopPropagation();
+
+      const li = a.parentElement;
+      const isOpen = li.classList.contains('open');
+
+      // fecha irmãos
+      li.parentElement.querySelectorAll('.has-submenu.open').forEach(sib => {
+        if (sib !== li) {
+          sib.classList.remove('open');
+          sib.querySelector(':scope > a')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // toggle no próprio
+      li.classList.toggle('open', !isOpen);
+      a.setAttribute('aria-expanded', String(!isOpen));
+    }, { passive:false });
   });
-}
 
-if (note) {
+  // Tocar fora fecha submenus (com drawer aberto)
+  document.addEventListener(TAP, ev => {
+    if (!mqMobile.matches) return;
+    const drawer = document.querySelector('.nav-list.is-open, .nav-listb.is-open');
+    if (!drawer) return;
+    if (ev.target.closest('.has-submenu')) return;
+    drawer.querySelectorAll('.has-submenu.open').forEach(li => {
+      li.classList.remove('open');
+      li.querySelector(':scope > a')?.setAttribute('aria-expanded', 'false');
+    });
+  }, true);
+
+  // Mudou breakpoint? limpa estados
+  mqMobile.addEventListener('change', () => {
+    document.querySelectorAll('.has-submenu.open').forEach(li => {
+      li.classList.remove('open');
+      li.querySelector(':scope > a')?.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+
+
+
+
+(() => {
+  const note = document.getElementById('formNote');
+  if (!note) return;
   const p = new URLSearchParams(location.search);
   if (p.has('sent'))  note.textContent = 'Mensagem enviada! Responderemos em breve.';
   if (p.has('error')) note.textContent = 'Não foi possível enviar agora. Tente novamente.';
-  // limpa a query da URL
+
   if (p.has('sent') || p.has('error')) {
     history.replaceState({}, '', location.pathname + location.hash);
   }
-}
+})();

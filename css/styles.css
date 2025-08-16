@@ -344,23 +344,158 @@ img{max-width:100%;display:block}
   .contact-grid{ grid-template-columns: 1fr; }
 }
 
-/* site.css */
-#contactForm input, #contactForm textarea{
-  transition: box-shadow .15s ease, border-color .15s ease;
-}
-#contactForm :focus{
-  box-shadow: 0 0 0 3px rgba(194,138,87,.25);
-  outline: none;
-}
-#contactForm :user-invalid{ border-color:#d14; }
-#contactForm :user-valid{ border-color:#5abf6a; }
+/* === Cores independentes por topbar === */
+.topbar{ --nav-color:#fff; }                           /* home (sobre o herói) */
+.topbar[data-elevated="true"]{ --nav-color:#111; }     /* ao rolar */
 
-#contactForm input, #contactForm textarea{
-  transition: box-shadow .15s ease, border-color .15s ease;
+.topbarb{ --nav-color:#111; }                          /* páginas internas */
+.topbarb[data-elevated="true"]{ --nav-color:#fff; }    /* se inverter */
+
+/* aplica a cor no nível 1 do menu A e B */
+.nav-link,.nav-linkb{ color:var(--nav-color); }
+.nav-link:visited,.nav-linkb:visited{ color:var(--nav-color); }
+.nav-link:hover,.nav-linkb:hover{ color:var(--accent); }
+
+/* Home (mobile): barra branca + texto preto */
+@media (max-width:1024px){
+  .topbar{ --nav-color:#111; }   /* links pretos no off-canvas */
 }
-#contactForm :focus{
+
+/* === Highlight unificado dos submenus (A e B) === */
+:root{ --submenu-hover-bg:#f8f7f4; }
+
+/* estado normal */
+.nav-list .submenu a,
+.nav-listb .submenu a{
+  color: var(--text, #2a2a2a);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+/* hover/focus/active com as cores do site */
+.nav-list .submenu a:hover,
+.nav-list .submenu a:focus,
+.nav-list .submenu a:active,
+.nav-listb .submenu a:hover,
+.nav-listb .submenu a:focus,
+.nav-listb .submenu a:active{
+  background: var(--submenu-hover-bg);
+  color: var(--accent, #c28a57);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(194,138,87,.25);
-  border-color: #c28a57;
 }
-button[disabled]{ opacity:.6; cursor:not-allowed; }
+
+/* evita roxo de link visitado dentro do submenu */
+.nav-list .submenu a:visited,
+.nav-listb .submenu a:visited{
+  color: var(--text, #2a2a2a);
+}
+
+/* marcação opcional do item atual */
+.nav-list .submenu a[aria-current="page"],
+.nav-listb .submenu a[aria-current="page"]{
+  background: var(--submenu-hover-bg);
+  color: var(--accent, #c28a57);
+  font-weight: 600;
+}
+
+/* === MENU DROPDOWN — BLOCO ÚNICO (sem duplicatas) === */
+.nav-list > li,
+.nav-listb > li{ position: relative; }
+
+.nav-list .submenu,
+.nav-listb .submenu{
+  position: absolute;             /* suspenso no desktop e mobile */
+  top: calc(100% + .5rem);
+  left: 0;
+  display: none;                  /* estado base: fechado */
+  min-width: 220px;
+  padding: .75rem 0;
+  background: #fff;
+  border: 1px solid var(--border, #e7e4de);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  list-style: none;
+  z-index: 1000;                  /* por cima do menu principal */
+}
+
+/* itens do submenu */
+.nav-list .submenu li,
+.nav-listb .submenu li{ list-style: none; }
+
+.nav-list .submenu a,
+.nav-listb .submenu a{
+  display: block;
+  padding: .6rem 1rem;
+  text-decoration: none;
+  color: var(--text, #2a2a2a);
+  font-weight: 400;
+}
+
+/* abre/fecha via classe (desktop + mobile) */
+.has-submenu.open > .submenu{ display: block; }
+
+/* Hover só em dispositivos com mouse (evita “grudar” no touch) */
+@media (hover:hover) and (pointer:fine){
+  .nav-list li.has-submenu:hover > .submenu,
+  .nav-listb li.has-submenu:hover > .submenu{ display:block; }
+}
+
+/* Mobile (off-canvas): submenu fica estático e só abre por clique */
+@media (max-width:1024px){
+  .nav-list .submenu,
+  .nav-listb .submenu{
+    position: static;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    display: none;                /* continua fechado por padrão */
+  }
+  .nav-list li.has-submenu.open > .submenu,
+  .nav-listb li.has-submenu.open > .submenu{ display:block; }
+}
+
+/* ===== css/styles.css  (adicione ao FINAL do arquivo) ===== */
+/* Mobile: dropdown vira estático, não sobrepõe e fecha por clique */
+@media (max-width:1024px){
+  .dropdown{ width:100%; }
+  .dropdown-menu{
+    position: static;           /* empurra, não flutua */
+    left:auto; top:auto; transform:none; display:none;
+    margin:.25rem 0 .5rem; padding:.35rem 0;
+    background: var(--paper);
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+  }
+  .dropdown.open > .dropdown-menu{ display:block; }
+  .dropdown-menu a{ padding:.65rem .9rem; }
+}
+
+/* Contact: centralização do bloco de detalhes (email + ícones) */
+.contact-grid > :last-child{ text-align:center; }
+.contact-grid > :last-child .social-icons{ justify-content:center; }
+
+@media (max-width:820px){
+  .contact-grid > :last-child{ text-align:center; }
+  .contact-grid > :last-child .social-icons{ justify-content:center; }
+}
+
+/* Mobile: submenu do dropdown empurra conteúdo (sem sobreposição) */
+@media (max-width:1024px){
+  .dropdown-menu{
+    position: static;
+    left:auto; top:auto; transform:none;
+    display: none;
+    margin: .25rem 0 .5rem;
+    padding: .35rem 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  }
+  .dropdown.open > .dropdown-menu{ display:block; }
+}
+
+

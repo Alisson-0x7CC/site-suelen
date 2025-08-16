@@ -5,7 +5,7 @@
 <title>Suélen Vicente — Fotografia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=1.0.4"/>
+<link rel="stylesheet" href="css/styles.css?v=1.0.4"/>
 </head>
 <body>
 <header class="topbarb" data-header>
@@ -30,7 +30,18 @@
             <li role="none"><a role="menuitem" href="revelacao.html">Revelação</a></li>
           </ul>
         </li>
-        <li><a class="nav-linkb" href="pacotes.html">Pacotes</a></li>
+        
+          <li class="dropdown">
+          <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">Pacotes</button>
+          <ul class="dropdown-menu" role="menu">
+            <li role = "none"><a role="menuitem" href="pacotes.html#newborn">Newborn</a></li>
+            <li role = "none"><a role="menuitem" href="pacotes.html#gestante">Gestante</a></li>
+            <li role = "none"><a role="menuitem" href="pacotes.html#nascimento">Nascimento</a></li>
+            <li role = "none"><a role="menuitem" href="pacotes.html#smash">Smash</a></li>
+            <li role = "none"><a role="menuitem" href="pacotes.html#pocket">Pocket</a></li>
+          </ul>
+          </li>
+
         <li><a class="nav-linkb" href="index.html#contato">Contato</a></li>
       </ul>
     </nav>
@@ -50,5 +61,11 @@
 
 </main>
 <footer class="footer"><div class="container"><p>© <span id="year"></span> Suélen Vicente — Todos os direitos reservados</p></div></footer>
-<script src="js/site.js?v=1.0.4" defer></script>
+<script src="js/scripts.js?v=1.0.4" defer></script>
+<!-- WhatsApp flutuante -->
+<a id="fabWhats" class="fab-whatsapp"
+   href="https://wa.me/5548999301282?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20um%20ensaio."
+   target="_blank" rel="noopener" aria-label="WhatsApp">
+  <img src="https://cdn.simpleicons.org/whatsapp/FFFFFF" alt="">
+</a>
 </body></html>
