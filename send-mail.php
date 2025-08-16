@@ -38,7 +38,7 @@ $valid = ($name !== "" && filter_var($email, FILTER_VALIDATE_EMAIL) && $message 
 // Monta e envia o e-mail
 $success = false;
 if ($valid) {
-  $to       = "suelenvicent@gmail.com"; // destino
+  $to       = "alissonmaciel966@gmail.com"; // destino
   $subject  = "Novo contato de {$name}";
   $domain   = preg_replace('/^www\./', '', $_SERVER['SERVER_NAME'] ?? 'seu-dominio.com.br');
   $from     = "no-reply@{$domain}";
