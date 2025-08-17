@@ -227,3 +227,25 @@ img{max-width:100%;display:block}
 .contact-grid>:last-child{text-align:center}
 .contact-grid>:last-child .social-icons{justify-content:center}
 @media (max-width:820px){.contact-grid{grid-template-columns:1fr}.contact-grid>:last-child{text-align:center}.contact-grid>:last-child .social-icons{justify-content:center}}
+
+/* ===== Mobile: ordem fixa TEXTO → FOTO (robusta) ===== */
+@media (max-width: 900px){
+  .pricing .pricing-row{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "text"
+      "media";
+    gap: 16px;
+  }
+  .pricing .pricing-row .pricing-text  { grid-area: text;  }
+  .pricing .pricing-row .pricing-media { grid-area: media; }
+
+  /* Fallback quando não houver classes (detecta coluna com figure/img) */
+  .pricing .pricing-row > :has(> figure),
+  .pricing .pricing-row > :has(> img)    { grid-area: media; }
+  .pricing .pricing-row > :not(:has(> figure)):not(:has(> img)) { grid-area: text; }
+
+  /* Garantia: imagens responsivas */
+  .pricing .pricing-row img{ width:100%; height:auto; display:block; }
+}
