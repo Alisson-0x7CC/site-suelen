@@ -228,3 +228,23 @@ img{max-width:100%;display:block}
 .contact-grid>:last-child .social-icons{justify-content:center}
 @media (max-width:950px){.contact-grid{grid-template-columns:1fr}.contact-grid>:last-child{text-align:center}.contact-grid>:last-child .social-icons{justify-content:center}}
 
+
+/* ===== Fix: menu mobile com links sempre visíveis no off-canvas ===== */
+/* Cole no FINAL do seu CSS (styles.css ou styles-cleaned.css) */
+@media (max-width:1024px){
+  /* nível 1 */
+  .nav-list.is-open .nav-link,
+  .nav-list.is-open .nav-link:visited,
+  .nav-listb.is-open .nav-linkb,
+  .nav-listb.is-open .nav-linkb:visited{
+    color:#111;
+  }
+  /* submenus (dropdown) */
+  .nav-list.is-open .dropdown-menu a,
+  .nav-list.is-open .dropdown-menu a:visited,
+  .nav-listb.is-open .dropdown-menu a,
+  .nav-listb.is-open .dropdown-menu a:visited{
+    color:#111;
+  }
+}
+
